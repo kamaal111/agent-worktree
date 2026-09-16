@@ -7,3 +7,4 @@ pub mod git;
 pub mod identity;
 pub mod lock;
 pub mod process;
+pub mod setup;

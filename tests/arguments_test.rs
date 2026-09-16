@@ -36,6 +36,14 @@ fn rejects_unsupported_agents() {
 }
 
 #[test]
+fn parses_a_setup_command_with_yes() {
+    let options = parse_arguments(&args(&["setup", "--yes"]), Agent::Codex).unwrap();
+
+    assert_eq!(options.command, CliCommand::Setup);
+    assert!(options.yes);
+}
+
+#[test]
 fn parses_a_guarded_destroy_command() {
     let options = parse_arguments(&args(&["destroy", "fix-db", "--yes"]), Agent::Codex).unwrap();
 
