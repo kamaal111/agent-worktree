@@ -16,12 +16,18 @@ opts into sharing them.
 
 ## Requirements
 
-- Rust and Cargo (stable toolchain)
-- Git with `git worktree add --relative-paths` support
+- Git 2.46+ (for `git worktree add --relative-paths` support)
 - Docker
 - the [Dev Container CLI](https://github.com/devcontainers/cli)
 - a `.devcontainer/devcontainer.json` or `.devcontainer.json` in the project
 - `codex` or `claude` installed inside the development container
+
+Run `agent-worktree setup` to check your Git version and install the Dev
+Container CLI if it's missing:
+
+```sh
+agent-worktree setup
+```
 
 The project devcontainer should start its databases and other supporting
 services. Lifecycle commands such as `postCreateCommand` should install project

@@ -7,6 +7,7 @@ pub enum CliCommand {
     Doctor,
     List,
     Run,
+    Setup,
     Stop,
 }
 
@@ -17,6 +18,7 @@ impl CliCommand {
             "doctor" => Some(CliCommand::Doctor),
             "list" => Some(CliCommand::List),
             "run" => Some(CliCommand::Run),
+            "setup" => Some(CliCommand::Setup),
             "stop" => Some(CliCommand::Stop),
             _ => None,
         }
@@ -28,6 +30,7 @@ impl CliCommand {
             CliCommand::Doctor => "doctor",
             CliCommand::List => "list",
             CliCommand::Run => "run",
+            CliCommand::Setup => "setup",
             CliCommand::Stop => "stop",
         }
     }

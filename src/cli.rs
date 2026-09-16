@@ -11,11 +11,13 @@ use crate::git::{
 };
 use crate::identity::lane_id;
 use crate::lock::acquire_lane_lock;
+use crate::setup::{ensure_dependencies, run_setup};
 
 pub fn usage() -> &'static str {
     "Usage:
   agent-worktree [run] [--name NAME] [--agent codex|claude] [--base REF] [-- AGENT_ARGS...]
   agent-worktree list [--json]
+  agent-worktree setup [--yes]
   agent-worktree doctor NAME
   agent-worktree stop NAME
   agent-worktree destroy NAME --yes
@@ -80,6 +82,10 @@ fn execute(argv: &[String], default_agent: Agent) -> Result<i32> {
         return Ok(0);
     }
 
+    if options.command == CliCommand::Setup {
+        return run_setup(options.yes);
+    }
+
     let cwd = std::env::current_dir()?;
     let repository = discover_repository(&cwd)?;
 
@@ -93,6 +99,7 @@ fn execute(argv: &[String], default_agent: Agent) -> Result<i32> {
     }
 
     if options.command == CliCommand::Run {
+        ensure_dependencies(options.yes)?;
         let name = options.name.clone().unwrap_or_else(|| generated_name(options.agent));
         let common_git_directory = Path::new(&repository.common_git_directory);
         let mut lock = acquire_lane_lock(common_git_directory, &name)?;
