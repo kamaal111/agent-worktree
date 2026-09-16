@@ -1,0 +1,32 @@
+src/lib.rs
+  s_ca4044a2db0107::t_c0dd4a47e7d946 10
+src/cli.rs
+  s_ca4044a2db0107::t_2f5ab37218cc14 85-88
+  s_ca4044a2db0107::t_ffc06aad6aa245 14,20
+src/arguments.rs
+  s_ca4044a2db0107::t_4bc1cf8cc7bffc 10,21,33
+README.md
+  s_ca4044a2db0107::t_a729e2bed5db5e 19,25-30
+  s_ca4044a2db0107::t_64c4b39927bf4f 31
+src/setup.rs
+  s_ca4044a2db0107::t_d1d6198a7faac9 1-153
+tests/arguments_test.rs
+  s_ca4044a2db0107::t_274b1029339837 39-45
+  s_ca4044a2db0107::t_621cc53c841750 38
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "6613a1a99fb5b5119740536e9e1ff211c94e6d6e",
+  "prompts": {},
+  "sessions": {
+    "s_ca4044a2db0107": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5ad681e8-cf1b-42ac-88ae-9981f5e287e9",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Kamaal Farah <kamaal.f1@gmail.com>"
+    }
+  }
+}
