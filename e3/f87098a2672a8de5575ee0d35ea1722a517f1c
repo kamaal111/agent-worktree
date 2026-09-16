@@ -1,0 +1,79 @@
+src/identity.rs
+  s_f704e786496c87::t_c46d699d4e1cb1 1-5,7-9,12,14-40
+  s_f704e786496c87::t_20dda0d3f6c82c 6,10-11,13
+tests/identity_test.rs
+  s_f704e786496c87::t_c995bbed599b85 1-32
+Cargo.toml
+  s_f704e786496c87::t_bcc414ee2d0b3e 1-24,26-27
+  s_f704e786496c87::t_8cb58d8474ad60 25
+tests/doctor_test.rs
+  s_f704e786496c87::t_39153195459215 1-57
+src/errors.rs
+  s_f704e786496c87::t_f08af30986900a 1-37
+src/doctor.rs
+  s_f704e786496c87::t_7f17250c12958b 1-244
+tests/lock_test.rs
+  s_f704e786496c87::t_3522c865953bcb 1-5,10,13-45
+  s_f704e786496c87::t_6e38fcb468f6b7 6-9,11-12
+LICENSE
+  s_c1589d45efd117::t_7753d699e7c955 1-21
+src/process.rs
+  s_f704e786496c87::t_1c1bc14673cd98 1-88
+src/devcontainer.rs
+  s_f704e786496c87::t_91ec77a2552f5a 1-195
+src/arguments.rs
+  s_f704e786496c87::t_112921def9eb44 1-88,90-167
+  s_f704e786496c87::t_4eab13f3403ec6 89
+src/bin/codex_worktree.rs
+  s_f704e786496c87::t_ae33bc57795ae4 1-7
+src/lock.rs
+  s_f704e786496c87::t_18d15494f4d333 1-6,8-35,37-81
+  s_f704e786496c87::t_92073a58b18294 7
+  s_f704e786496c87::t_d2217e939ab3fd 36
+src/cli.rs
+  s_f704e786496c87::t_45d61cbf75064f 1-163
+.gitignore
+  s_f704e786496c87::t_b251da060dbe3e 1
+  s_f704e786496c87::t_bfa47951325e4e 2
+src/lib.rs
+  s_f704e786496c87::t_379ac368fac9dd 1-9
+src/git.rs
+  s_f704e786496c87::t_6ff143da7a79f7 1-210
+README.md
+  s_c1589d45efd117::t_4ae02eb46a0f1f 1-18,20-32,34,38-111
+  s_f704e786496c87::t_cd05200c986c7d 19,33,35-37
+tests/arguments_test.rs
+  s_f704e786496c87::t_68404da76cc78d 1-45
+src/bin/agent_worktree.rs
+  s_f704e786496c87::t_d41c7cd2e53c84 1-7
+src/bin/claude_worktree.rs
+  s_f704e786496c87::t_00856309e55502 1-7
+tests/git_test.rs
+  s_f704e786496c87::t_604dcf2bc5724d 1-25
+Cargo.lock
+  s_f704e786496c87::t_3f908444b61df9 1-240
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "e3f87098a2672a8de5575ee0d35ea1722a517f1c",
+  "prompts": {},
+  "sessions": {
+    "s_c1589d45efd117": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0a6b6-40b2-79a2-b85a-91047f83a0bf",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Kamaal Farah <kamaal.f1@gmail.com>"
+    },
+    "s_f704e786496c87": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3b23dc2e-4f2f-4ba1-b41e-228be23932ca",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": null
+    }
+  }
+}
