@@ -1,0 +1,65 @@
+LICENSE
+  s_c1589d45efd117::t_7753d699e7c955 1-21
+README.md
+  s_c1589d45efd117::t_4ae02eb46a0f1f 1-110
+bin/claude-worktree.mjs
+  s_c1589d45efd117::t_774ea4439db066 1-5
+bin/codex-worktree.mjs
+  s_c1589d45efd117::t_62301c6a09c059 1-5
+bin/run.mjs
+  s_c1589d45efd117::t_4359f9fdbe446d 1-5
+package.json
+  s_c1589d45efd117::t_8088217b80305a 1-37
+pnpm-lock.yaml
+  s_c1589d45efd117::t_cc2f6cf59adf8c 1-216
+src/arguments.ts
+  s_c1589d45efd117::t_515b3bca8652d1 1-69
+src/cli.ts
+  s_c1589d45efd117::t_e6472c989badd6 1-124
+src/devcontainer.ts
+  s_c1589d45efd117::t_5f4816025b05f5 1-107
+src/doctor.ts
+  s_c1589d45efd117::t_a3257f7d3a49f4 1-91
+src/errors.ts
+  s_c1589d45efd117::t_7ccdc4e4f85e32 1-7
+src/git.ts
+  s_c1589d45efd117::t_c51d58f2980fd7 1-129
+src/identity.ts
+  s_c1589d45efd117::t_a25ec5d07f7f32 1-14
+src/lock.ts
+  s_c1589d45efd117::t_d78f2b126c8fbe 1-62
+src/process.ts
+  s_c1589d45efd117::t_1f17ab41d859be 1-41
+test/arguments.test.ts
+  s_c1589d45efd117::t_35ba72889e1438 1-39
+test/doctor.test.ts
+  s_c1589d45efd117::t_5d62a54f4ea8f4 1-53
+test/git.test.ts
+  s_c1589d45efd117::t_38c80a716163f3 1-24
+test/identity.test.ts
+  s_c1589d45efd117::t_1bb614985e1422 1-27
+test/lock.test.ts
+  s_c1589d45efd117::t_69e33feff71f38 1-29
+tsconfig.build.json
+  s_c1589d45efd117::t_3a447e8919060b 1-12
+tsconfig.json
+  s_c1589d45efd117::t_8a1fed6aaf3726 1-17
+tsconfig.test.json
+  s_c1589d45efd117::t_15d7eeeca1c0f9 1-9
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "9ac65d3082c2b4bfb7f99b03440feb78d0446f2b",
+  "prompts": {},
+  "sessions": {
+    "s_c1589d45efd117": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0a6b6-40b2-79a2-b85a-91047f83a0bf",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Kamaal Farah <kamaal.f1@gmail.com>"
+    }
+  }
+}
