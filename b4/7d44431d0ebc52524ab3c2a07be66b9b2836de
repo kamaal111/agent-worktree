@@ -1,0 +1,51 @@
+src/arguments.rs
+  s_d28e7c35f4f864::t_f5bd5501d97ae3 55-56,98-100,111-115,121-127,134-141,156-160,176-178
+tests/arguments_test.rs
+  s_d28e7c35f4f864::t_f5bd5501d97ae3 10-23,26-29
+src/doctor.rs
+  s_d28e7c35f4f864::t_f5bd5501d97ae3 119-122,139-146,158-162,164-167,175-179,184-189,203-205,209-211,227-234,242-247,258-261,265-269,287-290
+justfile
+  s_d28e7c35f4f864::t_f192971347baf6 1-34
+.github/workflows/main.yaml
+  s_d28e7c35f4f864::t_ed3fffa429a487 1-45
+src/process.rs
+  s_d28e7c35f4f864::t_f5bd5501d97ae3 15-20,66-75,78-88,96-99,106-110
+tests/lock_test.rs
+  s_d28e7c35f4f864::t_f5bd5501d97ae3 12-16,22-25
+src/cli.rs
+  s_d28e7c35f4f864::t_f5bd5501d97ae3 5-7,11-12,37-40,76-79,111-114,165-168
+tests/identity_test.rs
+  s_d28e7c35f4f864::t_f5bd5501d97ae3 12-14,33-40
+tests/doctor_test.rs
+  s_d28e7c35f4f864::t_f5bd5501d97ae3 10-13,48-51,54-74
+src/devcontainer.rs
+  s_d28e7c35f4f864::t_f5bd5501d97ae3 32-34,42-45,74-76,81-86,141-145,189-193
+tests/git_test.rs
+  s_d28e7c35f4f864::t_f5bd5501d97ae3 12-15
+src/errors.rs
+  s_d28e7c35f4f864::t_f5bd5501d97ae3 11-14,18-21
+src/git.rs
+  s_d28e7c35f4f864::t_f5bd5501d97ae3 42-45,107-110,116-121,132-138,146-151,162-167,172-180,210-214,218-222,235-237,241-246,248-251
+src/lock.rs
+  s_d28e7c35f4f864::t_f5bd5501d97ae3 45-48,64-69,77-79,85-88
+src/setup.rs
+  s_d28e7c35f4f864::t_f5bd5501d97ae3 12-14,35-39,65-68,95-99,172-175
+src/identity.rs
+  s_d28e7c35f4f864::t_f5bd5501d97ae3 38-44
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "b47d44431d0ebc52524ab3c2a07be66b9b2836de",
+  "prompts": {},
+  "sessions": {
+    "s_d28e7c35f4f864": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b78eb922-1019-4067-9cd9-c2202d60d092",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Kamaal Farah <kamaal.f1@gmail.com>"
+    }
+  }
+}
