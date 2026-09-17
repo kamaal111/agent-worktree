@@ -1,0 +1,35 @@
+services:
+  code:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    volumes:
+      - ${LOCAL_WORKSPACE_FOLDER}:${LOCAL_WORKSPACE_FOLDER}:cached
+      - ${GIT_COMMON_DIR}:${GIT_COMMON_DIR}:cached
+      - type: bind
+        source: ~/.gitconfig
+        target: /root/.gitconfig
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ~/.codex
+        target: /root/.codex
+        bind:
+          create_host_path: false
+      - claude-config:/root/.claude
+      - type: bind
+        source: ~/.claude/plugins
+        target: /root/.claude/plugins
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ~/.claude/skills
+        target: /root/.claude/skills
+        read_only: true
+        bind:
+          create_host_path: false
+    command: sleep infinity
+
+volumes:
+  claude-config:

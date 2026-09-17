@@ -1,0 +1,8 @@
+{
+  "editor.defaultFormatter": "rust-lang.rust-analyzer",
+  "editor.formatOnSave": true,
+  "[rust]": { "editor.defaultFormatter": "rust-lang.rust-analyzer" },
+  "[toml]": { "editor.defaultFormatter": "tamasfe.even-better-toml" },
+  "rust-analyzer.check.command": "clippy",
+  "cSpell.words": ["agent-worktree", "codex", "libc", "rustup", "clippy", "rustfmt"]
+}
