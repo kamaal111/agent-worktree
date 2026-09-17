@@ -1,0 +1,35 @@
+.devcontainer/.zshrc
+  s_151e39f7f067e5::t_74bdf4af525818 1-21
+.devcontainer/docker-compose.code.yml
+  s_151e39f7f067e5::t_6107bdb6a77c07 1-35
+.devcontainer/initialize.sh
+  s_151e39f7f067e5::t_1b08944ce2ca9f 1-12
+.vscode/extensions.json
+  s_151e39f7f067e5::t_e32390987f8f9f 1-6
+.gitignore
+  s_151e39f7f067e5::t_2e8cf632c9b7d8 3
+.devcontainer/post-create.sh
+  s_151e39f7f067e5::t_ed589dea912cf7 1-4
+.devcontainer/devcontainer.json
+  s_151e39f7f067e5::t_a0423a65ac2acb 1-28
+.vscode/settings.json
+  s_151e39f7f067e5::t_f7ed676271e8ac 1-8
+.devcontainer/Dockerfile
+  s_151e39f7f067e5::t_6f9a7f4ef1b7e9 1-27
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "e2e0a866fd7a9b1048a1f704e65763f15c026115",
+  "prompts": {},
+  "sessions": {
+    "s_151e39f7f067e5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b17cf4a4-f688-48c8-84f3-3ef219ef0e62",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Kamaal Farah <kamaal.f1@gmail.com>"
+    }
+  }
+}
