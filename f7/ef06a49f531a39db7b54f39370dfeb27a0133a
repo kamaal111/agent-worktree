@@ -1,0 +1,38 @@
+tests/arguments_test.rs
+  s_ca4044a2db0107::t_274b1029339837 39-45
+  s_ca4044a2db0107::t_621cc53c841750 38
+README.md
+  s_ca4044a2db0107::t_a729e2bed5db5e 19,25-30
+  s_ca4044a2db0107::t_64c4b39927bf4f 31
+src/cli.rs
+  s_ca4044a2db0107::t_f21719236c47f4 14
+  s_ca4044a2db0107::t_c5aa40494d5dc1 102
+  s_ca4044a2db0107::t_2f5ab37218cc14 85-88
+  s_ca4044a2db0107::t_ffc06aad6aa245 20
+src/arguments.rs
+  s_ca4044a2db0107::t_4bc1cf8cc7bffc 10,21,33
+src/lib.rs
+  s_ca4044a2db0107::t_c0dd4a47e7d946 10
+src/setup.rs
+  s_ca4044a2db0107::t_fa4fcd7514bb13 4
+  s_ca4044a2db0107::t_47a28283f47ceb 32,40-45
+  s_ca4044a2db0107::t_d1d6198a7faac9 1-3,5-31,33-39,46-102,104,108-128,131,146-171
+  s_ca4044a2db0107::t_406f66db4d8b17 103,105-107
+  s_ca4044a2db0107::t_367a97055a707a 129-130,132-145
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "f7ef06a49f531a39db7b54f39370dfeb27a0133a",
+  "prompts": {},
+  "sessions": {
+    "s_ca4044a2db0107": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5ad681e8-cf1b-42ac-88ae-9981f5e287e9",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": null
+    }
+  }
+}
