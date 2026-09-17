@@ -29,7 +29,9 @@ impl Agent {
 
 pub fn find_devcontainer_config(worktree_path: &Path) -> Result<PathBuf> {
     let candidates = [
-        worktree_path.join(".devcontainer").join("devcontainer.json"),
+        worktree_path
+            .join(".devcontainer")
+            .join("devcontainer.json"),
         worktree_path.join(".devcontainer.json"),
     ];
     for candidate in candidates {
@@ -37,7 +39,10 @@ pub fn find_devcontainer_config(worktree_path: &Path) -> Result<PathBuf> {
             return Ok(candidate);
         }
     }
-    fail(format!("no devcontainer configuration found in {}", worktree_path.display()))
+    fail(format!(
+        "no devcontainer configuration found in {}",
+        worktree_path.display()
+    ))
 }
 
 fn lane_environment(id: &str) -> Vec<(String, String)> {
@@ -66,12 +71,19 @@ pub fn start_environment(worktree_path: &Path, id: &str) -> Result<()> {
     command(
         "devcontainer",
         &args_ref,
-        CommandOptions::new(worktree_path).env(lane_environment(id)).inherit_stdio(true),
+        CommandOptions::new(worktree_path)
+            .env(lane_environment(id))
+            .inherit_stdio(true),
     )?;
     Ok(())
 }
 
-pub fn run_agent(worktree_path: &Path, id: &str, agent: Agent, agent_args: &[String]) -> Result<i32> {
+pub fn run_agent(
+    worktree_path: &Path,
+    id: &str,
+    agent: Agent,
+    agent_args: &[String],
+) -> Result<i32> {
     let mut args: Vec<String> = vec!["exec".to_string()];
     args.extend(workspace_args(worktree_path));
     args.push(agent.as_str().to_string());
@@ -126,7 +138,11 @@ fn container_ids_for_label(id: &str, label: &str, cwd: &Path, all: bool) -> Resu
     args.push("--filter".to_string());
     args.push(filter);
     let args_ref: Vec<&str> = args.iter().map(String::as_str).collect();
-    let result = command("docker", &args_ref, CommandOptions::new(cwd).allow_failure(true))?;
+    let result = command(
+        "docker",
+        &args_ref,
+        CommandOptions::new(cwd).allow_failure(true),
+    )?;
     if result.exit_code != 0 {
         return fail(if result.stderr.is_empty() {
             format!("could not list Docker containers for {id}")
@@ -170,7 +186,11 @@ fn docker_container_ids(id: &str, cwd: &Path, all: bool) -> Result<Vec<String>> 
 pub fn destroy_environment(worktree_path: &Path, id: &str) -> Result<()> {
     let containers = docker_container_ids(id, worktree_path, true)?;
     if !containers.is_empty() {
-        let mut args = vec!["container".to_string(), "rm".to_string(), "--force".to_string()];
+        let mut args = vec![
+            "container".to_string(),
+            "rm".to_string(),
+            "--force".to_string(),
+        ];
         args.extend(containers);
         let args_ref: Vec<&str> = args.iter().map(String::as_str).collect();
         command("docker", &args_ref, CommandOptions::new(worktree_path))?;

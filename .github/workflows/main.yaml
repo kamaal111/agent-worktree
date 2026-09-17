@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - '**'
+
+concurrency:
+  group: ${{ github.ref }}-ci
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Quality
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git - Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up just
+        uses: extractions/setup-just@v4
+
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2
+
+      - name: Check quality
+        run: just quality
+
+  test:
+    name: Test
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git - Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up just
+        uses: extractions/setup-just@v4
+
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2
+
+      - name: Run tests
+        run: just test

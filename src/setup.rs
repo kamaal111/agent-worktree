@@ -9,7 +9,9 @@ const DEVCONTAINER_INSTALL_SCRIPT: &str =
     "https://raw.githubusercontent.com/devcontainers/cli/main/scripts/install.sh";
 
 fn parse_git_version(output: &str) -> Option<(u32, u32, u32)> {
-    let token = output.split_whitespace().find(|word| word.chars().next().is_some_and(|c| c.is_ascii_digit()))?;
+    let token = output
+        .split_whitespace()
+        .find(|word| word.chars().next().is_some_and(|c| c.is_ascii_digit()))?;
     let mut parts = token.split('.').map(|part| {
         let digits: String = part.chars().take_while(|c| c.is_ascii_digit()).collect();
         digits.parse::<u32>().unwrap_or(0)
@@ -30,7 +32,11 @@ fn git_upgrade_hint() -> &'static str {
 }
 
 fn check_git(cwd: &Path, announce_ok: bool) -> Result<bool> {
-    let detected = match command("git", &["--version"], CommandOptions::new(cwd).allow_failure(true)) {
+    let detected = match command(
+        "git",
+        &["--version"],
+        CommandOptions::new(cwd).allow_failure(true),
+    ) {
         Ok(result) if result.exit_code == 0 => parse_git_version(&result.stdout),
         _ => None,
     };
@@ -56,7 +62,10 @@ fn check_git(cwd: &Path, announce_ok: bool) -> Result<bool> {
         None => {
             eprintln!(
                 "git: not found. Install git {}.{}.{} or newer: {}",
-                MIN_GIT_VERSION.0, MIN_GIT_VERSION.1, MIN_GIT_VERSION.2, git_upgrade_hint()
+                MIN_GIT_VERSION.0,
+                MIN_GIT_VERSION.1,
+                MIN_GIT_VERSION.2,
+                git_upgrade_hint()
             );
             Ok(false)
         }
@@ -83,7 +92,11 @@ fn confirm(prompt: &str) -> bool {
 fn install_devcontainer_cli(cwd: &Path) {
     let install_command = format!("curl -fsSL {DEVCONTAINER_INSTALL_SCRIPT} | sh");
     println!("Installing Dev Container CLI: {install_command}");
-    let result = command("sh", &["-c", &install_command], CommandOptions::new(cwd).inherit_stdio(true));
+    let result = command(
+        "sh",
+        &["-c", &install_command],
+        CommandOptions::new(cwd).inherit_stdio(true),
+    );
     match result {
         Ok(result) if result.exit_code == 0 => {
             if devcontainer_installed(cwd) {
@@ -156,7 +169,10 @@ mod tests {
 
     #[test]
     fn parses_version_with_vendor_suffix() {
-        assert_eq!(parse_git_version("git version 2.39.2 (Apple Git-143)"), Some((2, 39, 2)));
+        assert_eq!(
+            parse_git_version("git version 2.39.2 (Apple Git-143)"),
+            Some((2, 39, 2))
+        );
     }
 
     #[test]

@@ -116,7 +116,10 @@ fn strings(value: Option<&JsonValue>) -> Vec<String> {
         Some(JsonValue::String(single)) => vec![single.clone()],
         Some(JsonValue::Array(items)) => {
             if items.iter().all(|item| item.is_string()) {
-                items.iter().map(|item| item.as_str().unwrap().to_string()).collect()
+                items
+                    .iter()
+                    .map(|item| item.as_str().unwrap().to_string())
+                    .collect()
             } else {
                 Vec::new()
             }
@@ -133,8 +136,14 @@ fn inspect_compose(compose: &JsonValue, filepath: &str) -> Vec<Diagnostic> {
     let mut diagnostics = Vec::new();
     let services = compose.get("services").map(as_object).unwrap_or_default();
     for (service_name, service) in &services {
-        let Some(service) = service.as_object() else { continue };
-        if service.get("container_name").and_then(JsonValue::as_str).is_some() {
+        let Some(service) = service.as_object() else {
+            continue;
+        };
+        if service
+            .get("container_name")
+            .and_then(JsonValue::as_str)
+            .is_some()
+        {
             diagnostics.push(Diagnostic {
                 file: filepath.to_string(),
                 message: format!("service {service_name} fixes container_name globally"),
@@ -146,9 +155,16 @@ fn inspect_compose(compose: &JsonValue, filepath: &str) -> Vec<Diagnostic> {
                 message: format!("service {service_name} uses the host network"),
             });
         }
-        let volumes = service.get("volumes").and_then(JsonValue::as_array).cloned().unwrap_or_default();
+        let volumes = service
+            .get("volumes")
+            .and_then(JsonValue::as_array)
+            .cloned()
+            .unwrap_or_default();
         for volume in &volumes {
-            let serialized = volume.as_str().map(str::to_string).unwrap_or_else(|| volume.to_string());
+            let serialized = volume
+                .as_str()
+                .map(str::to_string)
+                .unwrap_or_else(|| volume.to_string());
             if serialized.contains("/var/run/docker.sock") {
                 diagnostics.push(Diagnostic {
                     file: filepath.to_string(),
@@ -156,12 +172,21 @@ fn inspect_compose(compose: &JsonValue, filepath: &str) -> Vec<Diagnostic> {
                 });
             }
         }
-        let ports = service.get("ports").and_then(JsonValue::as_array).cloned().unwrap_or_default();
+        let ports = service
+            .get("ports")
+            .and_then(JsonValue::as_array)
+            .cloned()
+            .unwrap_or_default();
         for port in &ports {
             let fixed_short_port = port.as_str().map(is_fixed_short_port).unwrap_or(false);
             let fixed_long_port = port
                 .as_object()
-                .map(|obj| matches!(obj.get("published"), Some(JsonValue::Number(_)) | Some(JsonValue::String(_))))
+                .map(|obj| {
+                    matches!(
+                        obj.get("published"),
+                        Some(JsonValue::Number(_)) | Some(JsonValue::String(_))
+                    )
+                })
                 .unwrap_or(false);
             if fixed_short_port || fixed_long_port {
                 diagnostics.push(Diagnostic {
@@ -175,11 +200,15 @@ fn inspect_compose(compose: &JsonValue, filepath: &str) -> Vec<Diagnostic> {
     for section_name in ["volumes", "networks"] {
         let section = compose.get(section_name).map(as_object).unwrap_or_default();
         for (resource_name, resource) in &section {
-            let Some(resource) = resource.as_object() else { continue };
+            let Some(resource) = resource.as_object() else {
+                continue;
+            };
             if resource.get("external") == Some(&JsonValue::Bool(true)) {
                 diagnostics.push(Diagnostic {
                     file: filepath.to_string(),
-                    message: format!("{section_name}.{resource_name} is external and may be shared"),
+                    message: format!(
+                        "{section_name}.{resource_name} is external and may be shared"
+                    ),
                 });
             }
             if resource.get("name").and_then(JsonValue::as_str).is_some() {
@@ -195,7 +224,14 @@ fn inspect_compose(compose: &JsonValue, filepath: &str) -> Vec<Diagnostic> {
 
 fn is_fixed_short_port(value: &str) -> bool {
     let (main, has_protocol) = match value.rsplit_once('/') {
-        Some((prefix, suffix)) if !suffix.is_empty() && suffix.chars().all(|c| c.is_ascii_alphanumeric() || c == '_') => (prefix, true),
+        Some((prefix, suffix))
+            if !suffix.is_empty()
+                && suffix
+                    .chars()
+                    .all(|c| c.is_ascii_alphanumeric() || c == '_') =>
+        {
+            (prefix, true)
+        }
         _ => (value, false),
     };
     let _ = has_protocol;
@@ -203,7 +239,12 @@ fn is_fixed_short_port(value: &str) -> bool {
     let is_digits = |value: &str| !value.is_empty() && value.chars().all(|c| c.is_ascii_digit());
     match parts.len() {
         2 => is_digits(parts[0]) && is_digits(parts[1]),
-        3 => !parts[0].is_empty() && !parts[0].contains(':') && is_digits(parts[1]) && is_digits(parts[2]),
+        3 => {
+            !parts[0].is_empty()
+                && !parts[0].contains(':')
+                && is_digits(parts[1])
+                && is_digits(parts[2])
+        }
         _ => false,
     }
 }
@@ -214,11 +255,18 @@ pub fn diagnose(worktree_path: &Path) -> Result<Vec<Diagnostic>> {
     let parsed = parse_jsonc(&config_text)
         .map_err(|error| AgentWorktreeError::new(format!("{}: {error}", config_path.display())))?;
     if !parsed.is_object() {
-        return Err(AgentWorktreeError::new(format!("{} does not contain a JSON object", config_path.display())));
+        return Err(AgentWorktreeError::new(format!(
+            "{} does not contain a JSON object",
+            config_path.display()
+        )));
     }
 
     let mut diagnostics = Vec::new();
-    if parsed.get("workspaceMount").and_then(JsonValue::as_str).is_some() {
+    if parsed
+        .get("workspaceMount")
+        .and_then(JsonValue::as_str)
+        .is_some()
+    {
         diagnostics.push(Diagnostic {
             file: config_path.to_string_lossy().to_string(),
             message: "custom workspaceMount can prevent automatic Git common-directory mounting for worktrees"
@@ -236,7 +284,10 @@ pub fn diagnose(worktree_path: &Path) -> Result<Vec<Diagnostic>> {
             .map_err(|error| AgentWorktreeError::new(format!("{}: {error}", filepath.display())))?;
         let compose = yaml_as_json(&compose_yaml);
         if !compose.is_object() {
-            return Err(AgentWorktreeError::new(format!("{} does not contain a Compose object", filepath.display())));
+            return Err(AgentWorktreeError::new(format!(
+                "{} does not contain a Compose object",
+                filepath.display()
+            )));
         }
         diagnostics.extend(inspect_compose(&compose, &filepath.to_string_lossy()));
     }

@@ -9,7 +9,10 @@ fn parses_primary_and_linked_worktrees() {
     assert_eq!(
         worktrees,
         vec![
-            Worktree { branch: Some("main".to_string()), path: "/repo".to_string() },
+            Worktree {
+                branch: Some("main".to_string()),
+                path: "/repo".to_string()
+            },
             Worktree {
                 branch: Some("agent/fix-db".to_string()),
                 path: "/repo/.agents/worktrees/fix-db".to_string(),

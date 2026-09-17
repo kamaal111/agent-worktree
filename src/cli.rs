@@ -2,12 +2,14 @@ use std::path::Path;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use crate::arguments::{parse_arguments, CliCommand};
-use crate::devcontainer::{destroy_environment, run_agent, start_environment, stop_environment, Agent};
+use crate::devcontainer::{
+    destroy_environment, run_agent, start_environment, stop_environment, Agent,
+};
 use crate::doctor::diagnose;
 use crate::errors::{AgentWorktreeError, Result};
 use crate::git::{
-    assert_clean_worktree, discover_repository, ensure_worktree, managed_worktrees, remove_worktree,
-    worktree_for_name, Repository,
+    assert_clean_worktree, discover_repository, ensure_worktree, managed_worktrees,
+    remove_worktree, worktree_for_name, Repository,
 };
 use crate::identity::lane_id;
 use crate::lock::acquire_lane_lock;
@@ -32,7 +34,10 @@ retains the Git branch."
 }
 
 fn generated_name(agent: Agent) -> String {
-    let timestamp = SystemTime::now().duration_since(UNIX_EPOCH).unwrap_or_default().as_secs();
+    let timestamp = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .unwrap_or_default()
+        .as_secs();
     format!("{}-{}-{}", agent.as_str(), timestamp, std::process::id())
 }
 
@@ -68,7 +73,10 @@ fn print_lanes_json(repository: &Repository) {
             })
         })
         .collect();
-    println!("{}", serde_json::to_string_pretty(&lanes).unwrap_or_default());
+    println!(
+        "{}",
+        serde_json::to_string_pretty(&lanes).unwrap_or_default()
+    );
 }
 
 fn execute(argv: &[String], default_agent: Agent) -> Result<i32> {
@@ -100,7 +108,10 @@ fn execute(argv: &[String], default_agent: Agent) -> Result<i32> {
 
     if options.command == CliCommand::Run {
         ensure_dependencies(options.yes)?;
-        let name = options.name.clone().unwrap_or_else(|| generated_name(options.agent));
+        let name = options
+            .name
+            .clone()
+            .unwrap_or_else(|| generated_name(options.agent));
         let common_git_directory = Path::new(&repository.common_git_directory);
         let mut lock = acquire_lane_lock(common_git_directory, &name)?;
         let result = (|| -> Result<i32> {
@@ -151,7 +162,10 @@ fn execute(argv: &[String], default_agent: Agent) -> Result<i32> {
     })();
     lock.release()?;
     result?;
-    let branch = worktree.branch.clone().unwrap_or_else(|| format!("agent/{name}"));
+    let branch = worktree
+        .branch
+        .clone()
+        .unwrap_or_else(|| format!("agent/{name}"));
     println!("Destroyed lane {name}; branch {branch} was retained.");
     Ok(0)
 }
