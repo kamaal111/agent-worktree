@@ -42,7 +42,10 @@ fn process_is_running(_pid: i32) -> bool {
 }
 
 fn create_lock(lock_path: &Path) -> std::io::Result<()> {
-    let mut file = fs::OpenOptions::new().write(true).create_new(true).open(lock_path)?;
+    let mut file = fs::OpenOptions::new()
+        .write(true)
+        .create_new(true)
+        .open(lock_path)?;
     let write_result = file.write_all(format!("{}\n", std::process::id()).as_bytes());
     if write_result.is_err() {
         drop(file);
@@ -58,7 +61,12 @@ pub fn acquire_lane_lock(common_git_directory: &Path, name: &str) -> Result<Lane
     fs::create_dir_all(&lock_directory)?;
 
     match create_lock(&lock_path) {
-        Ok(()) => return Ok(LaneLock { lock_path, released: false }),
+        Ok(()) => {
+            return Ok(LaneLock {
+                lock_path,
+                released: false,
+            })
+        }
         Err(error) if error.kind() == ErrorKind::AlreadyExists => {}
         Err(error) => return Err(error.into()),
     }
@@ -66,13 +74,18 @@ pub fn acquire_lane_lock(common_git_directory: &Path, name: &str) -> Result<Lane
     let contents = fs::read_to_string(&lock_path).unwrap_or_default();
     if let Ok(owner_pid) = contents.trim().parse::<i32>() {
         if owner_pid > 0 && process_is_running(owner_pid) {
-            return fail(format!("lane {name} is already in use by process {owner_pid}"));
+            return fail(format!(
+                "lane {name} is already in use by process {owner_pid}"
+            ));
         }
     }
 
     let _ = fs::remove_file(&lock_path);
     match create_lock(&lock_path) {
-        Ok(()) => Ok(LaneLock { lock_path, released: false }),
+        Ok(()) => Ok(LaneLock {
+            lock_path,
+            released: false,
+        }),
         Err(error) if error.kind() == ErrorKind::AlreadyExists => {
             fail(format!("lane {name} was claimed by another process"))
         }

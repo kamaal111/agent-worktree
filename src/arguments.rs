@@ -52,7 +52,8 @@ pub struct CliOptions {
 fn agent_value(value: Option<String>, default_agent: Agent) -> Result<Agent> {
     match value {
         None => Ok(default_agent),
-        Some(raw) => Agent::parse(&raw).ok_or_else(|| AgentWorktreeError::usage("--agent must be codex or claude")),
+        Some(raw) => Agent::parse(&raw)
+            .ok_or_else(|| AgentWorktreeError::usage("--agent must be codex or claude")),
     }
 }
 
@@ -94,9 +95,9 @@ fn parse_wrapper_args(args: &[String]) -> Result<ParsedArgs> {
                     Ok(value.clone())
                 } else {
                     *i += 1;
-                    args.get(*i)
-                        .cloned()
-                        .ok_or_else(|| AgentWorktreeError::usage(format!("--{flag_name} requires a value")))
+                    args.get(*i).cloned().ok_or_else(|| {
+                        AgentWorktreeError::usage(format!("--{flag_name} requires a value"))
+                    })
                 }
             };
             match flag_name {
@@ -107,21 +108,37 @@ fn parse_wrapper_args(args: &[String]) -> Result<ParsedArgs> {
                 "json" => json = true,
                 "version" => version = true,
                 "yes" => yes = true,
-                other => return Err(AgentWorktreeError::usage(format!("unknown option '--{other}'"))),
+                other => {
+                    return Err(AgentWorktreeError::usage(format!(
+                        "unknown option '--{other}'"
+                    )))
+                }
             }
         } else if token == "-h" {
             help = true;
         } else if token == "-y" {
             yes = true;
-        } else if token.starts_with('-') && token.len() > 1 && !token.chars().nth(1).unwrap().is_ascii_digit() {
-            return Err(AgentWorktreeError::usage(format!("unknown option '{token}'")));
+        } else if token.starts_with('-')
+            && token.len() > 1
+            && !token.chars().nth(1).unwrap().is_ascii_digit()
+        {
+            return Err(AgentWorktreeError::usage(format!(
+                "unknown option '{token}'"
+            )));
         } else {
             positionals.push(token.to_string());
         }
         i += 1;
     }
 
-    Ok(ParsedArgs { positionals, strings: StringOptions { agent, base, name }, help, json, version, yes })
+    Ok(ParsedArgs {
+        positionals,
+        strings: StringOptions { agent, base, name },
+        help,
+        json,
+        version,
+        yes,
+    })
 }
 
 pub fn parse_arguments(argv: &[String], default_agent: Agent) -> Result<CliOptions> {
@@ -136,8 +153,11 @@ pub fn parse_arguments(argv: &[String], default_agent: Agent) -> Result<CliOptio
     };
 
     let first = wrapper_args.first();
-    let command = first.and_then(|value| CliCommand::parse(value)).unwrap_or(CliCommand::Run);
-    let args: Vec<String> = if first.is_some() && CliCommand::parse(first.unwrap()) == Some(command) {
+    let command = first
+        .and_then(|value| CliCommand::parse(value))
+        .unwrap_or(CliCommand::Run);
+    let args: Vec<String> = if first.is_some() && CliCommand::parse(first.unwrap()) == Some(command)
+    {
         wrapper_args[1..].to_vec()
     } else {
         wrapper_args.clone()
@@ -153,7 +173,9 @@ pub fn parse_arguments(argv: &[String], default_agent: Agent) -> Result<CliOptio
     }
     let name = parsed.strings.name.or(positional_name);
     if command != CliCommand::Run && !agent_args.is_empty() {
-        return Err(AgentWorktreeError::usage("arguments after -- are only valid with run"));
+        return Err(AgentWorktreeError::usage(
+            "arguments after -- are only valid with run",
+        ));
     }
 
     Ok(CliOptions {

@@ -12,7 +12,12 @@ pub struct CommandOptions<'a> {
 
 impl<'a> CommandOptions<'a> {
     pub fn new(cwd: &'a Path) -> Self {
-        Self { allow_failure: false, cwd, env: None, inherit_stdio: false }
+        Self {
+            allow_failure: false,
+            cwd,
+            env: None,
+            inherit_stdio: false,
+        }
     }
 
     pub fn allow_failure(mut self, value: bool) -> Self {
@@ -58,18 +63,29 @@ pub fn command(executable: &str, args: &[&str], options: CommandOptions) -> Resu
     }
 
     let (exit_code, stdout, stderr) = if options.inherit_stdio {
-        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());
-        let status = cmd
-            .status()
-            .map_err(|error| AgentWorktreeError::new(format!("could not run {executable}: {error}")))?;
-        let exit_code = status.code().or_else(|| signal_exit_code(&status)).unwrap_or(1);
+        cmd.stdin(Stdio::inherit())
+            .stdout(Stdio::inherit())
+            .stderr(Stdio::inherit());
+        let status = cmd.status().map_err(|error| {
+            AgentWorktreeError::new(format!("could not run {executable}: {error}"))
+        })?;
+        let exit_code = status
+            .code()
+            .or_else(|| signal_exit_code(&status))
+            .unwrap_or(1);
         (exit_code, String::new(), String::new())
     } else {
-        cmd.stdin(Stdio::null()).stdout(Stdio::piped()).stderr(Stdio::piped());
-        let output = cmd
-            .output()
-            .map_err(|error| AgentWorktreeError::new(format!("could not run {executable}: {error}")))?;
-        let exit_code = output.status.code().or_else(|| signal_exit_code(&output.status)).unwrap_or(1);
+        cmd.stdin(Stdio::null())
+            .stdout(Stdio::piped())
+            .stderr(Stdio::piped());
+        let output = cmd.output().map_err(|error| {
+            AgentWorktreeError::new(format!("could not run {executable}: {error}"))
+        })?;
+        let exit_code = output
+            .status
+            .code()
+            .or_else(|| signal_exit_code(&output.status))
+            .unwrap_or(1);
         let stdout = String::from_utf8_lossy(&output.stdout).trim().to_string();
         let stderr = String::from_utf8_lossy(&output.stderr).trim().to_string();
         (exit_code, stdout, stderr)
@@ -77,12 +93,19 @@ pub fn command(executable: &str, args: &[&str], options: CommandOptions) -> Resu
 
     if exit_code != 0 && !options.allow_failure {
         let message = if stderr.is_empty() {
-            format!("{executable} {} failed with exit code {exit_code}", args.join(" "))
+            format!(
+                "{executable} {} failed with exit code {exit_code}",
+                args.join(" ")
+            )
         } else {
             stderr
         };
         return fail(message);
     }
 
-    Ok(CommandResult { exit_code, stderr, stdout })
+    Ok(CommandResult {
+        exit_code,
+        stderr,
+        stdout,
+    })
 }

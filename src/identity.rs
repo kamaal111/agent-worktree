@@ -35,6 +35,12 @@ pub fn lane_id(primary_root: &Path, name: &str) -> String {
     let mut hasher = Sha256::new();
     hasher.update(primary_root.to_string_lossy().as_bytes());
     let digest = hasher.finalize();
-    let digest_hex: String = digest.iter().map(|byte| format!("{byte:02x}")).collect::<String>().chars().take(10).collect();
+    let digest_hex: String = digest
+        .iter()
+        .map(|byte| format!("{byte:02x}"))
+        .collect::<String>()
+        .chars()
+        .take(10)
+        .collect();
     format!("aw-{repository}-{lane}-{digest_hex}")
 }

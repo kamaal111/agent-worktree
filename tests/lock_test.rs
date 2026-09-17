@@ -9,13 +9,20 @@ static COUNTER: AtomicU64 = AtomicU64::new(0);
 
 fn temp_dir(prefix: &str) -> std::path::PathBuf {
     let unique = COUNTER.fetch_add(1, Ordering::SeqCst);
-    let dir = std::env::temp_dir().join(format!("{prefix}-{}-{}-{unique}", std::process::id(), fastrand_like()));
+    let dir = std::env::temp_dir().join(format!(
+        "{prefix}-{}-{}-{unique}",
+        std::process::id(),
+        fastrand_like()
+    ));
     fs::create_dir_all(&dir).unwrap();
     dir
 }
 
 fn fastrand_like() -> u128 {
-    std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_nanos()
+    std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .unwrap()
+        .as_nanos()
 }
 
 #[test]

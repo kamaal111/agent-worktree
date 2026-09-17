@@ -9,7 +9,9 @@ fn creates_stable_compose_compatible_lane_identities() {
     let second = lane_id(Path::new("/Users/example/Projects/My App"), "Fix/Payments");
 
     assert_eq!(first, second);
-    assert!(first.chars().all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || c == '_' || c == '-'));
+    assert!(first
+        .chars()
+        .all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || c == '_' || c == '-'));
     assert!(first.starts_with("aw-my-app-fix-payments-"));
 }
 
@@ -28,5 +30,12 @@ fn deduplicates_resources_carrying_both_lane_and_compose_labels() {
         vec!["container-b".to_string(), "container-c".to_string()],
     ]);
 
-    assert_eq!(ids, vec!["container-a".to_string(), "container-b".to_string(), "container-c".to_string()]);
+    assert_eq!(
+        ids,
+        vec![
+            "container-a".to_string(),
+            "container-b".to_string(),
+            "container-c".to_string()
+        ]
+    );
 }

@@ -7,11 +7,26 @@ fn args(values: &[&str]) -> Vec<String> {
 
 #[test]
 fn parses_a_codex_run_with_passthrough_arguments() {
-    let options = parse_arguments(&args(&["run", "--name", "fix-db", "--agent", "codex", "--", "exec", "--full-auto"]), Agent::Codex)
-        .unwrap();
+    let options = parse_arguments(
+        &args(&[
+            "run",
+            "--name",
+            "fix-db",
+            "--agent",
+            "codex",
+            "--",
+            "exec",
+            "--full-auto",
+        ]),
+        Agent::Codex,
+    )
+    .unwrap();
 
     assert_eq!(options.agent, Agent::Codex);
-    assert_eq!(options.agent_args, vec!["exec".to_string(), "--full-auto".to_string()]);
+    assert_eq!(
+        options.agent_args,
+        vec!["exec".to_string(), "--full-auto".to_string()]
+    );
     assert_eq!(options.base, None);
     assert_eq!(options.command, CliCommand::Run);
     assert!(!options.help);

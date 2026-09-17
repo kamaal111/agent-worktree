@@ -39,7 +39,10 @@ pub fn parse_worktree_list(output: &str) -> Vec<Worktree> {
             if let Some(worktree) = current.take() {
                 entries.push(worktree);
             }
-            current = Some(Worktree { path: rest.to_string(), branch: None });
+            current = Some(Worktree {
+                path: rest.to_string(),
+                branch: None,
+            });
         } else if let Some(rest) = line.strip_prefix("branch refs/heads/") {
             if let Some(worktree) = current.as_mut() {
                 worktree.branch = Some(rest.to_string());
@@ -101,13 +104,21 @@ pub fn ensure_worktree(repository: &Repository, name: &str, base: Option<&str>) 
         return Ok(filepath);
     }
     if exists(&filepath) {
-        return fail(format!("{} exists but is not a registered Git worktree", filepath.display()));
+        return fail(format!(
+            "{} exists but is not a registered Git worktree",
+            filepath.display()
+        ));
     }
 
     let branch = format!("agent/{name}");
     let branch_exists = command(
         "git",
-        &["show-ref", "--verify", "--quiet", &format!("refs/heads/{branch}")],
+        &[
+            "show-ref",
+            "--verify",
+            "--quiet",
+            &format!("refs/heads/{branch}"),
+        ],
         CommandOptions::new(&repository.primary_root).allow_failure(true),
     )?
     .exit_code
@@ -118,7 +129,13 @@ pub fn ensure_worktree(repository: &Repository, name: &str, base: Option<&str>) 
     if branch_exists {
         command(
             "git",
-            &["worktree", "add", "--relative-paths", &filepath_str, &branch],
+            &[
+                "worktree",
+                "add",
+                "--relative-paths",
+                &filepath_str,
+                &branch,
+            ],
             CommandOptions::new(&repository.primary_root),
         )?;
         return Ok(filepath);
@@ -126,7 +143,12 @@ pub fn ensure_worktree(repository: &Repository, name: &str, base: Option<&str>) 
 
     let remote_default = command(
         "git",
-        &["symbolic-ref", "--quiet", "--short", "refs/remotes/origin/HEAD"],
+        &[
+            "symbolic-ref",
+            "--quiet",
+            "--short",
+            "refs/remotes/origin/HEAD",
+        ],
         CommandOptions::new(&repository.primary_root).allow_failure(true),
     )?
     .stdout;
@@ -137,12 +159,25 @@ pub fn ensure_worktree(repository: &Repository, name: &str, base: Option<&str>) 
         .unwrap_or_else(|| "HEAD".to_string());
     command(
         "git",
-        &["rev-parse", "--verify", "--quiet", &format!("{selected_base}^{{commit}}")],
+        &[
+            "rev-parse",
+            "--verify",
+            "--quiet",
+            &format!("{selected_base}^{{commit}}"),
+        ],
         CommandOptions::new(&repository.primary_root),
     )?;
     command(
         "git",
-        &["worktree", "add", "--relative-paths", "-b", &branch, &filepath_str, &selected_base],
+        &[
+            "worktree",
+            "add",
+            "--relative-paths",
+            "-b",
+            &branch,
+            &filepath_str,
+            &selected_base,
+        ],
         CommandOptions::new(&repository.primary_root),
     )?;
     Ok(filepath)
@@ -172,11 +207,19 @@ fn normalize(path: &Path) -> PathBuf {
 }
 
 pub fn managed_worktrees(repository: &Repository) -> Vec<Worktree> {
-    let prefix = format!("{}{}", repository.managed_directory.display(), std::path::MAIN_SEPARATOR);
+    let prefix = format!(
+        "{}{}",
+        repository.managed_directory.display(),
+        std::path::MAIN_SEPARATOR
+    );
     repository
         .worktrees
         .iter()
-        .filter(|worktree| resolve(Path::new(&worktree.path)).to_string_lossy().starts_with(&prefix))
+        .filter(|worktree| {
+            resolve(Path::new(&worktree.path))
+                .to_string_lossy()
+                .starts_with(&prefix)
+        })
         .cloned()
         .collect()
 }
@@ -189,13 +232,23 @@ pub fn worktree_for_name(repository: &Repository, name: &str) -> Result<Worktree
         .iter()
         .find(|entry| resolve(Path::new(&entry.path)) == expected)
         .cloned()
-        .ok_or_else(|| crate::errors::AgentWorktreeError::new(format!("lane does not exist: {name}")))
+        .ok_or_else(|| {
+            crate::errors::AgentWorktreeError::new(format!("lane does not exist: {name}"))
+        })
 }
 
 pub fn assert_clean_worktree(worktree_path: &Path) -> Result<()> {
-    let status = command("git", &["status", "--porcelain"], CommandOptions::new(worktree_path))?.stdout;
+    let status = command(
+        "git",
+        &["status", "--porcelain"],
+        CommandOptions::new(worktree_path),
+    )?
+    .stdout;
     if !status.is_empty() {
-        return fail(format!("refusing to destroy a dirty worktree: {}", worktree_path.display()));
+        return fail(format!(
+            "refusing to destroy a dirty worktree: {}",
+            worktree_path.display()
+        ));
     }
     Ok(())
 }

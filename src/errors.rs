@@ -8,11 +8,17 @@ pub struct AgentWorktreeError {
 
 impl AgentWorktreeError {
     pub fn new(message: impl Into<String>) -> Self {
-        Self { message: message.into(), is_usage: false }
+        Self {
+            message: message.into(),
+            is_usage: false,
+        }
     }
 
     pub fn usage(message: impl Into<String>) -> Self {
-        Self { message: message.into(), is_usage: true }
+        Self {
+            message: message.into(),
+            is_usage: true,
+        }
     }
 }
 
