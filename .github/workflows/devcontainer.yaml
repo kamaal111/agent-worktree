@@ -1,0 +1,41 @@
+name: Devcontainer
+
+on:
+  push:
+    branches:
+      - '**'
+    paths:
+      - '.devcontainer/**'
+      - '.github/workflows/devcontainer.yaml'
+
+concurrency:
+  group: ${{ github.ref }}-devcontainer
+  cancel-in-progress: true
+
+jobs:
+  build-and-verify:
+    name: Build & Verify
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git - Checkout
+        uses: actions/checkout@v7
+
+      - name: Build devcontainer and run verification
+        uses: devcontainers/ci@v0.3
+        with:
+          configFile: .devcontainer/ci/devcontainer.json
+          push: never
+          runCmd: |
+            set -euo pipefail
+            export PATH="$HOME/.cargo/bin:$HOME/.local/bin:$HOME/.devcontainers/bin:/opt/codex-home/bin:$PATH"
+
+            rustc --version
+            cargo clippy --version
+            cargo fmt --version
+            just --version
+            claude --version
+            codex --version
+            devcontainer --version
+
+            just ready
